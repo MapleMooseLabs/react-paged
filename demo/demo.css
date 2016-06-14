@@ -3,11 +3,27 @@ body {
   padding: 0;
   font-family: sans-serif; }
 
-ul, li {
-  padding: 0;
+.paged__controls {
   margin: 0;
-  list-style: none; }
+  padding: 0; }
 
-li {
-  padding: 3px 0;
-  display: inline-block; }
+.paged__control-item {
+  display: inline-block;
+  padding: 6px 12px; }
+
+.paged__control-link {
+  display: block;
+  padding: 6px 12px;
+  border: 3px solid #4b9ce3;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #4b9ce3;
+  background-color: #fff;
+  transition: all 0.3s; }
+  .paged__control-link:hover, .paged__control-link--active {
+    color: #fff;
+    background-color: #4b9ce3; }
+  .paged__control-link--disabled {
+    border-color: #ccc;
+    background-color: #efefef;
+    color: #ccc; }

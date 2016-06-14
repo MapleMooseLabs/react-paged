@@ -48,6 +48,7 @@
     "watchify": "^2.4.0"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "whatwg-fetch": "^1.0.0"
   }
 }
