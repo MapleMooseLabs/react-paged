@@ -5,15 +5,13 @@ import PagedControls from '../components/PagedControls';
 export default class Paged extends React.Component {
   constructor(props) {
     super(props);
-    const totalItems = (props.children ? props.children.length : 0);
     this.state = {
       currentPage: 1,
       itemsPerPage: props.itemsPerPage,
       itemRange: {
         min: 0,
         max: props.itemsPerPage - 1
-      },
-      totalItems: totalItems,
+      }
     }
   }
 
@@ -35,60 +33,42 @@ export default class Paged extends React.Component {
   }
 
   getTotalPages() {
-    return Math.ceil(this.state.totalItems / this.state.itemsPerPage);
-  }
-
-  renderChildren() {
-    const { itemRange } = this.state;
-    let children = this.props.children.filter(x => x.key >= itemRange.min && x.key <= itemRange.max);
-    return children;
-  }
-
-  renderControls() {
-    const { showControls, labels } = this.props;
-
-    if (showControls) {
-      return (
-        <PagedControls
-          currentPage={ this.state.currentPage }
-          totalPages={ this.getTotalPages() }
-          gotoPage={ this.gotoPage.bind(this) }
-          labels={ labels } />
-      );
+    const children = this.props.children;
+    let items = [];
+    for (let child of children) {
+      if (child.type.name === 'PagedContent') {
+        items = child.props.children;
+        break;
+      }
     }
-
-    return null;
+    return Math.ceil(items.length / this.state.itemsPerPage);
   }
 
   render() {
-    const { labels, children, showControls } = this.props;
-
+    const { children } = this.props;
+    const { currentPage, itemsPerPage, itemRange } = this.state;
     return (
       <div ref="container" className="paged">
-        { (showControls !=='bottom' ? this.renderControls() : null) }
-        { this.renderChildren() }
-        { (showControls !=='top' ? this.renderControls() : null) }
+        {
+          React.Children.map(this.props.children,
+            (child) => React.cloneElement(child, {
+              currentPage: currentPage,
+              itemRange: itemRange,
+              itemsPerPage: itemsPerPage,
+              gotoPage: this.gotoPage.bind(this),
+              totalPages: this.getTotalPages(),
+            })
+          )
+        }
       </div>
     );
   }
 }
 
 Paged.propTypes = {
-  itemsPerPage: PropTypes.number,
-  labels: PropTypes.object,
-  data: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array
-  ])
+  itemsPerPage: PropTypes.number
 };
 
 Paged.defaultProps = {
-  itemsPerPage: 10,
-  labels: {
-    next: 'next',
-    previous: 'previous',
-    first: 'first',
-    last: 'last'
-  },
-  showControls: false
+  itemsPerPage: 10
 };

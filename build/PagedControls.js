@@ -28,6 +28,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var PagedControls = function (_React$Component) {
@@ -43,12 +47,17 @@ var PagedControls = function (_React$Component) {
     value: function renderControl(page, el, label) {
       var currentPage = this.props.currentPage;
       var ControlTag = '' + el;
+      // console.log('%s : %d', label, page);
+      var classes = (0, _classnames2.default)('paged__control-link', {
+        'paged__control-link--active': page === currentPage && page === label,
+        'paged__control-link--disabled': (page === currentPage || page === currentPage) && page !== label
+      });
       return _react2.default.createElement(
         'li',
-        { key: label },
+        { key: label, className: 'paged__control-item' },
         _react2.default.createElement(
           ControlTag,
-          { onClick: this.props.gotoPage.bind(this, page), disabled: currentPage === page },
+          { className: classes, onClick: this.props.gotoPage.bind(this, page) },
           label
         )
       );
@@ -64,15 +73,15 @@ var PagedControls = function (_React$Component) {
 
       var controls = [];
 
-      controls.push(this.renderControl(1, 'button', labels.first));
-      controls.push(this.renderControl(currentPage - 1, 'button', labels.previous));
+      controls.push(this.renderControl(1, 'a', labels.first));
+      controls.push(this.renderControl(currentPage > 1 ? currentPage - 1 : 1, 'a', labels.previous));
 
       for (var i = 1; i <= totalPages; i++) {
         controls.push(this.renderControl(i, 'a', i));
       }
 
-      controls.push(this.renderControl(currentPage + 1, 'button', labels.next));
-      controls.push(this.renderControl(totalPages, 'button', labels.last));
+      controls.push(this.renderControl(currentPage < totalPages ? currentPage + 1 : totalPages, 'a', labels.next));
+      controls.push(this.renderControl(totalPages, 'a', labels.last));
 
       return controls;
     }
@@ -81,7 +90,7 @@ var PagedControls = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'ul',
-        null,
+        { className: 'paged__controls' },
         this.renderControls()
       );
     }
@@ -98,5 +107,11 @@ PagedControls.propTypes = {
 
 PagedControls.defaultProps = {
   totalPages: 1,
-  currentPage: 1
+  currentPage: 1,
+  labels: {
+    next: 'next',
+    previous: 'previous',
+    first: 'first',
+    last: 'last'
+  }
 };

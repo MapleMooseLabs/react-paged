@@ -3,29 +3,27 @@ import ReactDOM from 'react-dom';
 
 import Paged from '../components/Paged';
 import PagedContent from '../components/PagedContent';
+import PagedItem from '../components/PagedItem';
+import PagedControls from '../components/PagedControls';
 
 class App extends React.Component {
 
   render() {
-    let data = [];
+    let pagedItems = [];
     for (let i = 1; i <=45 ; i++) {
-      data.push((
-        <h3>Content item { i }</h3>
+      pagedItems.push((
+        <PagedItem key={ i }>
+          <h3>Content item { i }</h3>
+        </PagedItem>
       ));
     }
     return (
       <div>
-        <Paged showControls>
-            {
-              data.map((item, index) => {
-                return (
-                  <PagedContent key={ index }>
-                    { item }
-                  </PagedContent>
-                );
-              })
-            }
-
+        <Paged>
+          <PagedContent>
+            { pagedItems }
+          </PagedContent>
+          <PagedControls />
         </Paged>
       </div>
     );

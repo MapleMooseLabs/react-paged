@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _getIterator2 = require('babel-runtime/core-js/get-iterator');
+
+var _getIterator3 = _interopRequireDefault(_getIterator2);
+
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -46,16 +50,13 @@ var Paged = function (_React$Component) {
 
     var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Paged).call(this, props));
 
-    console.log(props);
-    var totalItems = props.children ? props.children.length : 0;
     _this.state = {
       currentPage: 1,
       itemsPerPage: props.itemsPerPage,
       itemRange: {
         min: 0,
         max: props.itemsPerPage - 1
-      },
-      totalItems: totalItems
+      }
     };
     return _this;
   }
@@ -85,52 +86,57 @@ var Paged = function (_React$Component) {
   }, {
     key: 'getTotalPages',
     value: function getTotalPages() {
-      return Math.ceil(this.state.totalItems / this.state.itemsPerPage);
-    }
-  }, {
-    key: 'renderChildren',
-    value: function renderChildren() {
-      var itemRange = this.state.itemRange;
+      var children = this.props.children;
+      var items = [];
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
 
-      var children = this.props.children.filter(function (x) {
-        return x.key >= itemRange.min && x.key <= itemRange.max;
-      });
-      return children;
-    }
-  }, {
-    key: 'renderControls',
-    value: function renderControls() {
-      var _props = this.props;
-      var showControls = _props.showControls;
-      var labels = _props.labels;
+      try {
+        for (var _iterator = (0, _getIterator3.default)(children), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var child = _step.value;
 
-
-      if (showControls) {
-        return _react2.default.createElement(_PagedControls2.default, {
-          currentPage: this.state.currentPage,
-          totalPages: this.getTotalPages(),
-          gotoPage: this.gotoPage.bind(this),
-          labels: labels });
+          if (child.type.name === 'PagedContent') {
+            items = child.props.children;
+            break;
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
       }
 
-      return null;
+      return Math.ceil(items.length / this.state.itemsPerPage);
     }
   }, {
     key: 'render',
     value: function render() {
-      // console.log(this.props);
-      var _props2 = this.props;
-      var labels = _props2.labels;
-      var children = _props2.children;
-      var showControls = _props2.showControls;
+      var _this2 = this;
 
+      var children = this.props.children;
 
       return _react2.default.createElement(
         'div',
-        { ref: 'container' },
-        showControls !== 'bottom' ? this.renderControls() : null,
-        this.renderChildren(),
-        showControls !== 'top' ? this.renderControls() : null
+        { ref: 'container', className: 'paged' },
+        _react2.default.Children.map(this.props.children, function (child) {
+          return _react2.default.cloneElement(child, {
+            currentPage: _this2.state.currentPage,
+            gotoPage: _this2.gotoPage.bind(_this2),
+            itemsPerPage: _this2.props.itemsPerPage,
+            totalPages: _this2.getTotalPages(),
+            itemRange: _this2.state.itemRange
+          });
+        })
       );
     }
   }]);
@@ -141,24 +147,9 @@ exports.default = Paged;
 
 
 Paged.propTypes = {
-  itemsPerPage: _react.PropTypes.number,
-  // labels: PropTypes.shape({
-  //   next: PropTypes.string,
-  //   previous: PropTypes.string,
-  //   first: PropTypes.string,
-  //   last: PropTypes.string,
-  // }),
-  labels: _react.PropTypes.object,
-  data: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.array])
+  itemsPerPage: _react.PropTypes.number
 };
 
 Paged.defaultProps = {
-  itemsPerPage: 10,
-  labels: {
-    next: 'next',
-    previous: 'previous',
-    first: 'first',
-    last: 'last'
-  },
-  showControls: false
+  itemsPerPage: 10
 };
