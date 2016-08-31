@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react';
-import PagedContent from './PagedContent';
-import PagedControls from '../components/PagedControls';
 
-export default class Paged extends React.Component {
+// import PagedContent from 'PagedContent';
+// import PagedItem from 'PagedItem';
+// import PagedControls from 'PagedControls';
+
+class Paged extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -72,3 +74,8 @@ Paged.propTypes = {
 Paged.defaultProps = {
   itemsPerPage: 10
 };
+
+export default Paged;
+// export { PagedContent };
+// export { PagedItem };
+// export { PagedControls };

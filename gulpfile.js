@@ -39,6 +39,8 @@ gulp.task('source-js', () => {
       plugins: ['transform-runtime'],
       presets: ['es2015', 'react']
     }))
+    .pipe(uglify())
+    .pipe(concat('index.js'))
     .pipe(gulp.dest('./build'))
 });
 
