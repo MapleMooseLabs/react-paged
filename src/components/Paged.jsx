@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 
+console.log('Paged!');
 // import PagedContent from 'PagedContent';
 // import PagedItem from 'PagedItem';
 // import PagedControls from 'PagedControls';
@@ -76,6 +77,8 @@ Paged.defaultProps = {
 };
 
 export default Paged;
+export { PagedContent } from './PagedContent';
+export { PagedItem } from './PagedItem';
 // export { PagedContent };
 // export { PagedItem };
 // export { PagedControls };

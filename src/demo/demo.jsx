@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import * as Paged from '../../build';
+import Paged, { PagedItem } from '../../build';
 // import PagedContent from '../components/PagedContent';
 // import PagedItem from '../components/PagedItem';
 // import PagedControls from '../components/PagedControls';
 
 console.log(Paged);
+console.log(PagedItem);
 class App extends React.Component {
 
   render() {
